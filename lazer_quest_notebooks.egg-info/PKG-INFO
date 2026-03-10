@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: lazer-quest-notebooks
+Version: 0.1.0
+Summary: Notebook runtime environment for the laser diffraction investigation.
+Requires-Python: >=3.12
+Requires-Dist: ipykernel>=6.29
+Requires-Dist: jupyterlab>=4.2
+Requires-Dist: matplotlib>=3.9
+Requires-Dist: numpy>=2.1
+Requires-Dist: openpyxl>=3.1
+Requires-Dist: pandas>=2.2
