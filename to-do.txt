@@ -1,0 +1,528 @@
+POWERPOINT FIX TO-DO LIST
+Based on: Presentation.pptx comments/notes + the uploaded notebooks
+Files reviewed:
+- Presentation.pptx
+- diffraction_investigation_analysis_hardcoded.ipynb
+- fresnel_straight_edge_wavelength.ipynb
+
+Important note:
+I was able to extract the slide text, slide notes/comments, and the notebook plot outputs. The PowerPoint package also contains ink-annotation XML objects on some slides, but those did not render cleanly in this environment, so the list below is based on the textual comments/notes plus the actual visible graphs and slide layouts.
+
+=====================================================================
+1. HIGHEST-PRIORITY GLOBAL FIXES
+=====================================================================
+
+1.1 Replace notebook-style screenshots with presentation exports
+- Do not paste raw notebook screenshots directly into slides when avoidable.
+- Re-export each final graph from matplotlib at high resolution (minimum 300 dpi; 400 dpi preferable if staying raster).
+- Prefer tight bounding boxes so the plot area fills more of the slide.
+- If possible, export vector versions (PDF/SVG) first, then place high-resolution renders into PowerPoint.
+- Avoid the look of “plot screenshot dropped onto black slide”; either:
+  - place each graph inside a white panel/card with even margins, or
+  - use a consistent white rectangular background behind all plots.
+
+1.2 Standardize graph typography across the whole deck
+- Use one consistent font size scale for all plots.
+- On-slide readability target:
+  - title: large enough to read from the back of the room,
+  - axis labels: clearly legible,
+  - tick labels: not tiny,
+  - legend text: no smaller than the tick labels,
+  - stats box text: only include if still readable when the graph is placed on the slide.
+- Increase font sizes before export rather than enlarging low-resolution images inside PowerPoint.
+
+1.3 Simplify statistics boxes
+- Current fit boxes often contain too many significant figures and too much regression detail.
+- For presentation slides, keep only the quantities that help the audience:
+  - slope (rounded sensibly),
+  - R^2 (if useful),
+  - final wavelength estimate with uncertainty.
+- Remove over-precise slopes/intercepts such as 6.8561e-06 unless that exact precision is scientifically necessary.
+- Round all reported values to sensible significant figures tied to the uncertainty.
+
+1.4 Make axis labels human-readable
+- Avoid notebook-internal or workbook-internal labels.
+- Avoid labels that only make sense to the person who wrote the spreadsheet.
+- Replace abstract/internal names like:
+  - “combined scaled”
+  - “workbook transform”
+  - “workbook-style”
+  - “index n”
+  with physically meaningful language.
+- Every axis should tell the audience exactly what is plotted and in what units.
+
+1.5 Avoid scientific-notation offsets unless essential
+- Several plots use automatic axis scaling like 1e-5 or 1e7.
+- For a presentation, convert axes to friendlier units where possible so the axis does not rely on a tiny scientific-notation offset in the corner.
+- Example: instead of leaving aΔy in raw SI units with a 1e-5 offset, convert to a more presentation-friendly scaled unit or explicitly label the axis as “aΔy (×10^-5 m^2)”.
+
+1.6 Use consistent naming across slides and plots
+- Use the same terminology everywhere for the same method.
+- In particular, use one final naming scheme for:
+  - single-slit method,
+  - grating maxima method,
+  - grating missing-order/envelope method,
+  - Fresnel half-period zones,
+  - straight-edge Fresnel diffraction.
+- Do not let notebook plot titles and slide bullet text use different names for the same analysis.
+
+1.7 Clarify what the audience should conclude from each graph
+- Each graph should have a one-line takeaway either in the title, subtitle, or nearby slide text.
+- Good structure for each result slide:
+  - what was plotted,
+  - why it should be linear,
+  - what wavelength came out,
+  - what the main weakness/error source was.
+
+=====================================================================
+2. SLIDE-BY-SLIDE / GRAPH-BY-GRAPH ACTIONS
+=====================================================================
+
+---------------------------------------------------------------------
+2A. Single-slit results slide(s)
+Relevant notebook:
+- diffraction_investigation_analysis_hardcoded.ipynb
+Relevant plot cells:
+- Cell 14: three separate slit fits
+- Cell 18: combined scaled single-slit fit
+Relevant PowerPoint comment:
+- “change dp of combined scale single-slit graph”
+---------------------------------------------------------------------
+
+Current state observed
+- There are three individual slit fits plus a stronger combined scaled fit available in the notebook.
+- The combined scaled fit is visually cleaner and scientifically stronger as the summary figure.
+- The thin-slit fit only appears to use two points, so it is much weaker and should not be given equal visual status.
+
+To do in the notebook
+1. Reformat the combined scaled single-slit graph (cell 18).
+   - Rename the title from “Combined scaled single-slit analysis” to something more explicit, for example:
+     “Single-slit summary: slit-width-scaled fringe separation vs order”.
+   - Change the y-axis label so it is presentation-friendly.
+     Current: aΔy (m^2)
+     Better: “aΔy (×10^-5 m^2)” or another scaled unit that removes the 1e-5 axis offset.
+   - Round the fit box values.
+     Current box is too precise for a talk slide.
+   - Keep only:
+     - slope,
+     - R^2,
+     - λ = ... ± ... nm.
+   - Remove or downplay the intercept unless you explicitly discuss systematic offsets.
+
+2. Decide whether cell 14 should appear at all.
+   Best presentation options:
+   - Option A: do not show all three individual slit plots on the main slide; use only the combined summary graph.
+   - Option B: keep one representative individual slit plot plus the combined summary.
+   - Option C: keep all three only if moved to an appendix / backup slide.
+
+3. If cell 14 is kept, fix the weak thin-slit panel.
+   - Make it visually clear that the thin slit is low-confidence / underdetermined.
+   - Do not present it as equally robust to the medium and thick slit datasets.
+   - Consider adding a subtitle or annotation such as “thin slit: only two usable orders”.
+
+To do in PowerPoint
+4. On the single-slit results slide, make the combined scaled plot the main result figure.
+5. Add one short conclusion line under the plot, for example:
+   - “Pooling different slit widths after scaling gives a consistent wavelength near 670 nm.”
+6. If individual slit plots remain, place them smaller beneath or beside the main summary and label them as consistency checks, not equal headline results.
+
+Formatting requirements
+7. Increase plot font sizes before export.
+8. Ensure legends and fit box are readable at slide size.
+9. Keep consistent slit colours across any single-slit figures.
+10. If using a white plot on a black slide, give it clear margins so it does not look cramped.
+
+---------------------------------------------------------------------
+2B. Grating maxima results
+Relevant notebook:
+- diffraction_investigation_analysis_hardcoded.ipynb
+Relevant plot cell:
+- Cell 23
+Relevant PowerPoint comment:
+- “change dp of figures”
+- Later summary note says rename to “Grating cos^2 fringes”
+---------------------------------------------------------------------
+
+Current state observed
+- The notebook has two related maxima plots:
+  - Grating 1 workbook-equivalent fit
+  - pooled fit across all valid grating datasets
+- The pooled plot is the stronger presentation result.
+- The title “Grating maxima pooled across all valid datasets” is accurate but still notebook-like.
+
+To do in the notebook
+1. Rename the right-hand plot title to a presentation title, for example:
+   “Grating cos^2 fringes: pooled maxima spacing fit”.
+2. Rename the left-hand plot title to something like:
+   “Representative grating fit (Grating 1)”
+   or move it to backup material.
+3. Round the statistics box values to sensible precision.
+4. Make sure the legend is not too dense.
+   - Six gratings on one graph is acceptable only if the legend remains readable.
+   - If not, use smaller markers and move the legend into two tidy columns outside or below the plot.
+5. Consider whether the left panel is needed in the main deck.
+   - The audience may not need both the representative and pooled fit on the same results slide.
+   - A stronger main-slide choice is to show only the pooled result, with one sentence explaining that multiple gratings were combined.
+
+To do in PowerPoint
+6. Rename the method consistently as “Grating cos^2 fringes”.
+7. In the bullet text, explain that sharper maxima reduce positional uncertainty.
+8. If both plots are kept, visually emphasize the pooled fit as the headline result and demote the Grating 1 plot to “example dataset”.
+
+Formatting requirements
+9. Use the same axis labels across grating maxima plots.
+10. Use a clean legend ordering (Grating 1 to Grating 6).
+11. Keep the regression line clearly visible and not hidden by markers.
+12. Remove excess whitespace so the plot uses more of the slide area.
+
+---------------------------------------------------------------------
+2C. Grating missing-order / envelope plot
+Relevant notebook:
+- diffraction_investigation_analysis_hardcoded.ipynb
+Relevant plot cell:
+- Cell 27
+Relevant PowerPoint summary comment:
+- rename “missing-order” to “Grating sinc^2 envelope”
+- change decimal precision of figures
+---------------------------------------------------------------------
+
+Current state observed
+- This plot is already fairly clean and presentation-usable.
+- The main issue is naming and precision.
+- The current title “Missing-order / envelope analysis” is less clear than it could be.
+
+To do in the notebook
+1. Rename the title to:
+   “Grating sinc^2 envelope: missing-order spacing fit”.
+2. Keep the x-axis as 1/a only if slit width a has already been introduced clearly on the preceding theory slide.
+   - Otherwise write “Inverse slit width 1/a (m^-1)”.
+3. Round the fit box values.
+4. Keep λ with uncertainty prominent.
+5. Consider whether the intercept should be shown.
+   - If systematic error/intercept discussion is reserved for the error slide, omit the intercept from the box here.
+
+To do in PowerPoint
+6. Update the slide text so this graph is explicitly tied to missing orders caused by the sinc envelope zero overlapping a grating fringe.
+7. Use the exact same method name on the results summary slide.
+
+Formatting requirements
+8. Increase axis label and tick size slightly.
+9. Ensure the red data points and black fit line remain distinguishable on the final slide background.
+10. Keep the figure large enough that the relatively small number of points is obvious.
+
+---------------------------------------------------------------------
+2D. Fresnel half-period zones result
+Relevant notebook:
+- diffraction_investigation_analysis_hardcoded.ipynb
+Relevant plot cell:
+- Cell 31
+Relevant PowerPoint comment:
+- “change axes labels, index and workbook transform both don’t really make sense, should be number of half zone and proportional to 1/R respectively”
+Relevant summary comment:
+- Fresnel label currently not sensible; “workbook-style” wording is not appropriate
+---------------------------------------------------------------------
+
+Current state observed
+- This is the weakest presentation graph in its current form.
+- The title and y-axis are spreadsheet-internal, not physically communicative.
+- “Workbook transform 1000/(27.32-d)” should not appear in the presentation.
+- “Index n” should be replaced by physically meaningful zone numbering.
+
+This is a high-priority fix.
+
+To do in the notebook
+1. Rework the plot so the axes reflect the actual physics, not the worksheet shorthand.
+2. Replace:
+   - title: “Fresnel workbook transform vs order”
+   with something like:
+   - “Fresnel half-period zones: quantity proportional to 1/R vs zone number”
+   or, ideally, the exact physically derived form if you can reconstruct it cleanly.
+3. Replace x-axis label:
+   - from “Index n”
+   - to “Half-period zone number n” or equivalent.
+4. Replace y-axis label:
+   - from “Workbook transform 1000/(27.32 - d)”
+   - to the actual derived quantity proportional to 1/R, with units if known.
+5. Remove the phrase “workbook-style” from the wavelength annotation.
+6. Reassess whether this figure should stay in the main deck at all.
+   - If you cannot make the axis meaning physically clear, do not present the graph in its current form.
+   - In that case, either:
+     - rebuild the analysis into a genuinely interpretable plot, or
+     - mention the result qualitatively and move the current graph to backup.
+
+To do in PowerPoint
+7. Update the slide text to explain exactly how R was measured and why 1/R should scale linearly with zone number.
+8. Make sure the displayed equation on the theory slide matches the quantity shown on the result slide.
+9. Avoid mixing three different names for the same method: Fresnel / half-period zones / workbook transform.
+   Use one consistent name.
+
+Formatting requirements
+10. The present error bars grow at larger n; make sure this is commented on explicitly.
+11. If the plot stays, add a subtitle or caption explaining that the transformed variable is a proxy for 1/R.
+12. Keep this graph visually subordinate to the Fraunhofer results if it remains more model-sensitive / less transparent.
+
+---------------------------------------------------------------------
+2E. Straight-edge Fresnel diffraction result
+Relevant notebook:
+- fresnel_straight_edge_wavelength.ipynb
+Relevant plot outputs:
+- Diagnostic 4-panel figure (cell 12 output 1)
+- Presentation straight-line figure (cell 12 output 2)
+Relevant PowerPoint note:
+- speaker note simply says “Magnification”, but the graph itself needs major presentation cleanup
+---------------------------------------------------------------------
+
+Current state observed
+- The 4-panel diagnostic figure is useful for analysis but is too dense for the main talk.
+- The single straight-line plot is the better presentation candidate.
+- However, the straight-line plot still has major communication problems:
+  - title is generic,
+  - y-axis expression is hard to parse,
+  - annotation box gives two different wavelength numbers (“Final lambda” and “Straight-line fit lambda”),
+  - Pair 12 / 23 / 34 are not explained on the figure itself,
+  - magnification M is central to the uncertainty but not integrated into the graph explanation.
+
+To do in the notebook
+1. Use the single straight-line plot as the main presentation export, not the 4-panel diagnostic figure.
+2. Rewrite the title so it states the physics, for example:
+   “Straight-edge Fresnel fit for wavelength extraction”
+   or a more explicit version if the transformed variable is defined on the slide.
+3. Rewrite the y-axis label in readable notation.
+   - Current label is too compact and hard to understand on a slide.
+   - Define the transformed variable in one line on the slide or use a notation already introduced in the theory slide.
+4. Explain the pair labels.
+   - Rename Pair 12 / Pair 23 / Pair 34 to something understandable, or define them in the legend/caption as separations between successive minima.
+5. Resolve the two-lambda confusion.
+   - The annotation box currently reports both a combined final lambda and a straight-line-fit lambda.
+   - Decide which one is the slide headline value.
+   - If both must remain, explain the difference clearly; otherwise the audience will think the result is inconsistent.
+6. Round the box values more cleanly.
+   - Avoid “400 +/- 200 nm” plus “500 +/- 200 nm” in the same box unless explicitly justified.
+7. Consider removing chi^2_red from the main slide unless the audience needs it.
+   - In a short talk, λ and the uncertainty matter more.
+
+To do in PowerPoint
+8. On the result slide, add one short sentence stating why magnification dominates the error budget.
+9. Tie the result back to the setup slide more clearly:
+   - measured screen spacing -> corrected by magnification -> converted to true spacing -> fitted for wavelength.
+10. If the result is much less precise than the Fraunhofer methods, state that directly so the audience understands why the error bars are large.
+
+Formatting requirements
+11. Do not use the 4-panel diagnostics on the main results slide.
+12. If the 4-panel figure is kept anywhere, put it in backup/appendix only.
+13. Increase the marker/legend readability and reduce the size of the annotation box if it obscures the data region.
+14. Ensure the final exported graph is large enough that the error bars are legible.
+
+---------------------------------------------------------------------
+2F. Overall results / comparison plot
+Relevant notebook:
+- diffraction_investigation_analysis_hardcoded.ipynb
+Relevant plot cell:
+- Cell 35
+Relevant PowerPoint comment:
+- “Need to make sure each label makes sense (!), and group them together (single slit all 4 measurements together), grating maxima can be renamed to ‘Grating cos^2 fringes’, ‘missing-order’ renamed to ‘Grating sinc^2 envelope’, Fresnel change ‘workbook-style’ because that doesn’t make sense”
+---------------------------------------------------------------------
+
+Current state observed
+- This is the most important summary plot and currently needs a naming/grouping pass.
+- The present ordering is roughly grouped, but the labels are still mixed between notebook language and presentation language.
+- “Grating maxima (average)” is not as good as “Grating cos^2 fringes (pooled)” or equivalent.
+- “Fresnel” is too vague unless you specify which Fresnel method.
+
+To do in the notebook
+1. Rename all methods using one final, audience-facing naming scheme.
+   Suggested naming scheme:
+   - Single slit (medium)
+   - Single slit (thick)
+   - Single slit (thin, limited data)
+   - Single slit (pooled / slit-width-scaled)
+   - Grating cos^2 fringes (representative)
+   - Grating cos^2 fringes (pooled)
+   - Grating sinc^2 envelope
+   - Fresnel half-period zones
+2. Group methods by family more clearly.
+   - All single-slit methods together.
+   - All grating methods together.
+   - Fresnel method(s) together.
+3. Consider whether both “representative” and “pooled” grating maxima results need to remain in the main summary plot.
+   - If not, keep only the pooled result.
+4. Consider visually highlighting the preferred final estimate.
+   Good options:
+   - add a vertical dashed line for the weighted average,
+   - add a lightly shaded band for the preferred range,
+   - use different marker colour for the preferred method(s).
+5. If keeping the thin-slit point, label it clearly as limited-data / low-confidence.
+6. Replace vague labels like “Fresnel” with the actual method name.
+
+To do in PowerPoint
+7. Use the same method names in the bullets and on the plot.
+8. Add one headline conclusion directly under the graph, for example:
+   - “Fraunhofer methods cluster around ~670–680 nm, while Fresnel-based methods are less precise because of geometric/magnification sensitivity.”
+9. Make the grouping visually obvious, either by ordering, spacing, or small subheadings.
+
+Formatting requirements
+10. Make the y-axis labels large enough to read clearly.
+11. Leave enough left margin so the method labels are not cramped.
+12. If a weighted average is shown on the slide text, consider marking it directly on the graph as well.
+
+=====================================================================
+3. NON-GRAPH SLIDES THAT STILL AFFECT GRAPH UNDERSTANDING
+=====================================================================
+
+---------------------------------------------------------------------
+3A. Theory/setup slide for single slit
+Relevant comment/text issue
+- Some note text references theory and uncertainty propagation, but the slide should prepare the audience to read the plot more easily.
+---------------------------------------------------------------------
+
+To do
+1. Make sure the theory slide defines exactly what Δy means before the results slide uses it.
+2. State clearly whether you measure symmetric minima separation directly or infer it from left/right minima positions.
+3. Make sure the plotted linear relationship shown in the results really matches the equation shown on the theory slide.
+
+---------------------------------------------------------------------
+3B. Fresnel half-period zones theory slide
+Relevant note
+- “How did we measure R, difference between focal length as the distance”
+---------------------------------------------------------------------
+
+To do
+1. Clarify how R was obtained experimentally.
+2. Make the geometry diagram easier to connect to the result graph.
+3. Define every symbol that later appears in the graph or equation.
+4. If the result slide uses 1/R or a proxy for it, the theory slide must explain that explicitly.
+
+---------------------------------------------------------------------
+3C. Straight-edge Fresnel setup / error slide
+---------------------------------------------------------------------
+
+To do
+1. Strengthen the explanation of magnification uncertainty.
+2. Show clearly why wavelength depends strongly on M and why small ruler errors in mm produce large propagated wavelength errors.
+3. If possible, add one compact formula showing the sensitivity to M.
+4. Link this slide directly to why the straight-edge result has much larger error bars than the Fraunhofer methods.
+
+=====================================================================
+4. ERROR / LIMITATIONS SLIDE: WHAT MUST BE ADDED
+=====================================================================
+
+Relevant PowerPoint comment:
+- “Systematic error!!!!! & intercepts”
+
+To do
+1. Add a distinction between random and systematic error.
+2. Explicitly mention non-zero intercepts in linear fits as possible evidence of:
+   - alignment offset,
+   - zero-position error,
+   - calibration error,
+   - imperfect origin choice,
+   - finite-angle/model approximations.
+3. Do not discuss only measurement scatter; discuss model/geometry biases too.
+4. Tie specific systematic issues to specific methods:
+   - single slit / grating: aperture dimensions, screen distance, alignment, manual fringe location,
+   - half-period zones: geometry definition of R, transformation/model dependence,
+   - straight-edge Fresnel: magnification, lens geometry, image-distance measurement.
+5. Make clear that the spread between methods is itself evidence that systematic effects matter.
+
+=====================================================================
+5. DECIMAL PLACES / SIGNIFICANT FIGURES POLICY
+=====================================================================
+
+This needs to be applied across all result plots.
+
+To do
+1. Quote uncertainties to one significant figure unless the first digit is 1 or 2, in which case two may be acceptable.
+2. Round central values to match the uncertainty precision.
+3. Do not show slope/intercept values with 5–7 significant figures on presentation graphs.
+4. Keep R^2 to at most 3–4 significant figures for the slide deck.
+5. Use the same plus/minus formatting everywhere:
+   - either “±” or “+/-”, but not a mix.
+6. Use consistent unit formatting:
+   - nm, cm, m^-1, etc.
+7. For presentation titles and labels, prefer normal words over variable-heavy shorthand unless the variable has already been defined.
+
+=====================================================================
+6. RECOMMENDED FINAL FIGURE SET FOR THE MAIN DECK
+=====================================================================
+
+If the goal is a clean and understandable presentation, the strongest main-deck figure set would be:
+
+1. Single-slit summary
+- Use the combined scaled single-slit plot as the main figure.
+- Optional: one representative individual slit plot in small inset or backup.
+
+2. Grating results
+- Use the pooled grating maxima plot as the main cos^2-fringe result.
+- Use the missing-order / sinc^2-envelope plot as the second grating result.
+- Treat the single-grating workbook-equivalent plot as backup unless needed for narrative continuity.
+
+3. Fresnel half-period zones
+- Only keep if the axes are rewritten into physically meaningful language.
+- Otherwise demote to backup or mention qualitatively.
+
+4. Straight-edge Fresnel
+- Use the cleaned single straight-line plot, not the 4-panel diagnostics.
+
+5. Final summary
+- Use the comparison plot with grouped labels, cleaned names, and a marked preferred estimate/range.
+
+=====================================================================
+7. NOTEBOOK EDIT CHECKLIST BY CELL
+=====================================================================
+
+Diffraction notebook (diffraction_investigation_analysis_hardcoded.ipynb)
+- Cell 14:
+  - decide whether to keep all three individual slit plots,
+  - label thin slit as limited-data if retained,
+  - enlarge fonts,
+  - simplify fit boxes.
+- Cell 18:
+  - fix title,
+  - fix axis scaling / scientific notation,
+  - reduce decimal places,
+  - make this the main single-slit presentation figure.
+- Cell 23:
+  - rename to Grating cos^2 fringes,
+  - reduce decimal places,
+  - possibly keep only pooled plot for main deck.
+- Cell 27:
+  - rename to Grating sinc^2 envelope,
+  - reduce decimal places,
+  - check axis wording.
+- Cell 31:
+  - completely rewrite axis labels/titles into physically meaningful form,
+  - remove workbook-language,
+  - only keep if interpretation becomes clear.
+- Cell 35:
+  - rename all methods consistently,
+  - group by family,
+  - optionally add preferred estimate marker/band.
+
+Straight-edge Fresnel notebook (fresnel_straight_edge_wavelength.ipynb)
+- Cell 12, diagnostic output:
+  - keep for analysis/backups only,
+  - do not use on main slide.
+- Cell 12, presentation straight-line output:
+  - fix title,
+  - fix y-axis readability,
+  - explain pair labels,
+  - resolve dual lambda values,
+  - simplify stats box,
+  - export as the main straight-edge figure.
+
+=====================================================================
+8. FINAL POWERPOINT ASSEMBLY CHECKLIST
+=====================================================================
+
+Before finalizing the deck:
+1. Check every graph at full slide size in presentation mode.
+2. Confirm that every graph title matches the spoken explanation.
+3. Confirm that every axis can be understood without reading notebook code.
+4. Confirm that every wavelength quoted on a graph matches the value quoted in the slide bullets.
+5. Confirm consistent colour meaning across slides.
+6. Confirm that any “preferred” or “headline” result is visually emphasized.
+7. Confirm that backup/appendix plots are separated from main-story plots.
+8. Confirm that systematic error is discussed explicitly, not just random scatter.
+9. Confirm that the final summary slide uses audience-facing language rather than workbook/internal language.
+
+End of to-do list.
